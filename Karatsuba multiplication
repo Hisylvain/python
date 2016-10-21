@@ -1,0 +1,36 @@
+#this is a code for integer mutiplication,using Karatsuba multiplication
+#I use python to pragram and the python's verion is 2.7.So there may be 
+# some difference if you use python 3.x
+'''
+1.we write the integer in this way:
+  x = a*B^(n/2) + b  ,  y = c*B^(n/2) + d
+  just like:
+  98 = 9 * 10^1 + 8
+2. x * y = ac * B^n +(ad + bc)*B^(n/2) + bd
+here we suppose B = 10,because it's easy to calculate.
+So,if we want to calculate x*y,using this way.We should know ac,10^n,10^(n/2)
+(ad + bc),bd.
+here is the code using python to realise calculate these arguement
+'''
+
+
+import math
+def integerMultiplication(num1,num2):
+    if (num1 < 10) or (num2 < 10):     #  here is the exit of thisfunction
+        return num1 * num2             #  here is the value
+    else:
+        m = max(len(str(num1)),len(str(num2)))  #here is n
+        m2 = m / 2                              #here is n/2
+
+        x1 = num1 / (10 ** m2)                  #x1 = a
+        x0 = num1 - x1*(10**m2)                 #x0 = b
+        y1 = num2 / (10 ** m2)                  #y1 = c
+        y0 = num2 - y1*(10**m2)                 #y0 = d
+
+        z2 = integerMultiplication(x1,y1)       #using recursive to calculate ac
+        z1 = integerMultiplication((x1 + x0),(y1 + y0))    #using recursive to calculate (a+b)*(c+d)
+        z0 = integerMultiplication(x0,y0)                   #using recursive to calculate bd
+
+        return (z2*(10**(2*m2))) + ((z1 - z2 - z0)*10**m2) + z0   #this is the final statement
+
+
